@@ -1,0 +1,17 @@
+1. Update LB to use port 80.
+2. LB should output the dns url, prepend "http://"
+3. If the student provides a URL to verify his work is running properly, it will be a page that says “it works! Udagram, Udacity”
+4. Upload that page to the s3 bucket:  aws s3 cp s3://udacity-demo-1/udacity.zip .
+5. Create an image that would be used in the launch configuration.
+
+Create:
+./create_stack.sh udacity-ha-solution-network network.yml network-parameters.json 
+./create_stack.sh udacity-ha-solution-servers servers.yml server-parameters.json 
+
+Update:
+./update_stack.sh udacity-ha-solution-network network.yml network-parameters.json 
+./update_stack.sh udacity-ha-solution-servers servers.yml server-parameters.json 
+
+Delete:
+./delete_stack udacity-ha-solution-network
+./delete_stack udacity-ha-solution-servers

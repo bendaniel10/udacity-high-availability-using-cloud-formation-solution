@@ -1,5 +1,5 @@
 Description: >
-    Daniel Ben / Udacity High availability deployment solution
+    Daniel Ben / Udacity High availability deployment solution (servers)
 
 Parameters:
 
@@ -64,8 +64,8 @@ Resources:
             Statement:
               - Effect: Allow
                 Action: 
-                  -"s3:Get*"
-                  -"s3:List*"
+                  - "s3:Get*"
+                  - "s3:List*"
                 Resource: "*"
       RoleName: "udacity-ha-solution-s3-readonly-role"
       Tags: 
@@ -73,13 +73,10 @@ Resources:
             Value: !Sub ${EnvironmentName} S3 Readonly role
 
   UdacityS3ReadOnlyEC2InstanceProfile:
-    Type: 'AWS::IAM::InstanceProfile'
+    Type: AWS::IAM::InstanceProfile
     Properties:
       Roles:
         - !Ref UdacityS3ReadOnlyEC2Role
-      Tags: 
-          - Key: Name 
-            Value: !Sub ${EnvironmentName} S3 Readonly instance profile
 
   WebAppLaunchConfig:
     Type: AWS::AutoScaling::LaunchConfiguration
@@ -167,3 +164,13 @@ Resources:
       VpcId: 
         Fn::ImportValue:
           Fn::Sub: "${EnvironmentName}-VPCID"
+
+Outputs: 
+
+    LoadBalancer: 
+        Description: A link to the loadbalancer
+        Value: !Sub
+          - http://${LBUrl}/webpage
+          - { LBUrl: !GetAtt WebAppLB.DNSName }
+        Export:
+          Name: !Sub ${EnvironmentName}-LoadBalancer

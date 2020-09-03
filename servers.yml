@@ -6,6 +6,10 @@ Parameters:
     EnvironmentName:
         Description: An environment name that will be prefixed to resource names
         Type: String
+    
+    UrlProtocol:
+        Description: The protocol of the DNS load balancer url
+        Type: String
         
 Resources:
 
@@ -92,7 +96,6 @@ Resources:
           aws s3 cp s3://daniel-ben-udacity-ha-solution/webpage.zip .
           unzip -o webpage.zip
       ImageId: ami-04932daa2567651e7
-      KeyName: udacity_ha_solution
       IamInstanceProfile: 
         Ref: "UdacityS3ReadOnlyEC2InstanceProfile"
       SecurityGroups:
@@ -170,7 +173,7 @@ Outputs:
     LoadBalancer: 
         Description: A link to the loadbalancer
         Value: !Sub
-          - http://${LBUrl}/webpage
+          - ${UrlProtocol}://${LBUrl}/webpage
           - { LBUrl: !GetAtt WebAppLB.DNSName }
         Export:
           Name: !Sub ${EnvironmentName}-LoadBalancer
